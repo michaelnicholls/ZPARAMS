@@ -24,7 +24,8 @@ CLASS ZCL_MN_HTTP IMPLEMENTATION.
         |<form  method="POST">| &&
         |<table border="1"><tr><th>Parameter</th><th>Description</th><th>Value</th></tr>|.
         SELECT * FROM zparams WHERE username = @sy-uname
-        INTO TABLE @DATA(t_params).
+        order by param
+        INTO TABLE @DATA(t_params) .
         LOOP AT t_params INTO DATA(params).
           html = | { html }<tr><td>{ params-param }</td><td>{ params-description }</td>| &&
 
@@ -32,7 +33,7 @@ CLASS ZCL_MN_HTTP IMPLEMENTATION.
           |<td><input  name="param{ params-param }" value="{ params-value }">| .
 
         ENDLOOP.
-        html = | { html }</table><input type="submit" value="Submit"></form>|.
+        html = | { html }</table><input type="submit" value="Update"></form>|.
         response->set_text( html ).
       WHEN CONV string( if_web_http_client=>post ).
         DATA(t_fields) = request->get_form_fields(  ).
