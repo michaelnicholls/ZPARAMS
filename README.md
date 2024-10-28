@@ -4,7 +4,7 @@ Has a table ZPARAMS which holds parameters for a specific user, plus a descripti
 
 There is a global class ZMN_GETSETPARAMS with two class methods:
 SETPARAM which sets a value for a paramter, with the option of overwriting a current value
-GETPARAM which returns the value of a parameter.
+and GETPARAM which returns the value of a parameter.
 
 For quickly setting up some random values for all the users, there is ZMN_INITPARAMS, and a small demo calculator ZCL_MN_DEMO.
 
