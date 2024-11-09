@@ -12,4 +12,4 @@ There is also an HTTP service ZMN_HTTP which in GET mode, returns a table of the
 and in POST mode updates the values.
 
 If you have problems after cloning the repo, try deleting the ZMn_HTTP service and its associated authorizations. Recreeate the service, using the 
-ZCL_MN_HTTP handler class, ans publish it locally.
+ZCL_PARAMS_HTTP handler class, and publish it locally.
