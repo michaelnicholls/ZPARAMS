@@ -11,5 +11,5 @@ For quickly setting up some random values for all the users, there is ZMN_INITPA
 There is also an HTTP service ZMN_HTTP which in GET mode, returns a table of the current value of the parameters for a user, 
 and in POST mode updates the values.
 
-If you have problems after cloning the repo, try deleting the ZMn_HTTP service and its associated authorizations. Recreeate the service, using the 
+If you have problems after cloning the repo, try deleting the ZMN_HTTP service and its associated authorizations. Recreeate the service, using the 
 ZCL_PARAMS_HTTP handler class, and publish it locally.
