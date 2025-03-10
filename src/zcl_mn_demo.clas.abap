@@ -11,10 +11,14 @@ ENDCLASS.
 
 
 
-CLASS zcl_mn_demo IMPLEMENTATION.
+CLASS ZCL_MN_DEMO IMPLEMENTATION.
+
+
   METHOD if_oo_adt_classrun~main.
 
+  zmn_getsetparams=>hideparams(  ).
 
+  " getparam will make it visible in the HTML page
 
     zmn_getsetparams=>setparam( description = 'extra parameter x' parname = 'ABC' parvalue = '999' overwrite = abap_true ).
     DATA(int1) = CONV i(  zmn_getsetparams=>getparam( 'INT1' ) ).
@@ -43,5 +47,4 @@ CLASS zcl_mn_demo IMPLEMENTATION.
      out->write( |{ result }| ).
 
     ENDMETHOD.
-
 ENDCLASS.

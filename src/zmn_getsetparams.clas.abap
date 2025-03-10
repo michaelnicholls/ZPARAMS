@@ -11,6 +11,7 @@ CLASS zmn_getsetparams DEFINITION
                 parvalue    TYPE zparams-value
                 description TYPE zparams-description
                 overwrite   TYPE abap_boolean.
+     class-METHODS hideparams.
     .
   PROTECTED SECTION.
   PRIVATE SECTION.
@@ -18,7 +19,9 @@ ENDCLASS.
 
 
 
-CLASS zmn_getsetparams IMPLEMENTATION.
+CLASS ZMN_GETSETPARAMS IMPLEMENTATION.
+
+
   METHOD getparam.
     data(u_parname) = to_upper(  parname  ).
     CLEAR parvalue.
@@ -26,7 +29,11 @@ CLASS zmn_getsetparams IMPLEMENTATION.
       WHERE username = @sy-uname
         AND param    = @u_parname
       INTO @parvalue.
+    update zparams set visible = 'X' where
+    username = @sy-uname
+        AND param    = @u_parname.
   ENDMETHOD.
+
 
   METHOD setparam.
     " TODO: parameter OVERWRITE is never used (ABAP cleaner)
@@ -46,6 +53,10 @@ CLASS zmn_getsetparams IMPLEMENTATION.
                         value       = parvalue ).
       MODIFY zparams FROM @params.
     ENDIF.
+    update zparams set visible = 'X' where username = @sy-uname and param = @u_parname.
+  ENDMETHOD.
+  METHOD HIDEPARAMS.
+    update zparams set visible = ''.
   ENDMETHOD.
 
 ENDCLASS.

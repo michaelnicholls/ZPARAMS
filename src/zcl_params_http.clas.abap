@@ -14,7 +14,6 @@ ENDCLASS.
 CLASS ZCL_PARAMS_HTTP IMPLEMENTATION.
 
 
-
   METHOD if_http_service_extension~handle_request.
     DATA html TYPE string.
 
@@ -23,7 +22,7 @@ CLASS ZCL_PARAMS_HTTP IMPLEMENTATION.
         html =  |<h2>Maintain your parameters</h2>| &&
         |<form  method="POST">| &&
         |<table border="1"><tr><th>Parameter</th><th>Description</th><th>Value</th></tr>|.
-        SELECT * FROM zparams WHERE username = @sy-uname
+        SELECT * FROM zparams WHERE username = @sy-uname and visible is not INITIAL
         order by param
         INTO TABLE @DATA(t_params) .
         LOOP AT t_params INTO DATA(params).
@@ -46,5 +45,4 @@ CLASS ZCL_PARAMS_HTTP IMPLEMENTATION.
         response->set_text(  |Parameter values updated. <button onClick="location.replace(location.href);">Restart</button>| ).
     ENDCASE..
   ENDMETHOD.
-
 ENDCLASS.

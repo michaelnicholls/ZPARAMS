@@ -10,7 +10,10 @@ CLASS zmn_initparams DEFINITION
 ENDCLASS.
 
 
-CLASS zmn_initparams IMPLEMENTATION.
+
+CLASS ZMN_INITPARAMS IMPLEMENTATION.
+
+
   METHOD if_oo_adt_classrun~main.
     DATA t_params TYPE TABLE OF zparams.
     DATA(operators) = |+-*/|.
@@ -26,6 +29,7 @@ CLASS zmn_initparams IMPLEMENTATION.
       DATA(op) = substring(  val = operators off = offset len = 1 ).
       t_params = VALUE #(  BASE t_params
                           username = |{ user-userid } |
+                          visible = 'Y'
                           ( param = 'INT1' description = 'First integer' value = |{  rand->intinrange(  low = -10  high = 30 ) }| )
                           ( param = 'INT2' description = 'Second integer' value = |{  rand->intinrange(  low = -10  high = 30 ) }| )
                           ( param = 'OPERATOR' description = 'Operator' value = |{ op  }| )
@@ -50,5 +54,4 @@ CLASS zmn_initparams IMPLEMENTATION.
 
     out->write( | {  lines( users ) } users updated| ).
   ENDMETHOD.
-
 ENDCLASS.
