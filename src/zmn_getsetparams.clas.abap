@@ -10,6 +10,7 @@ CLASS zmn_getsetparams DEFINITION
       IMPORTING parname     TYPE zparams-param
                 parvalue    TYPE zparams-value
                 description TYPE zparams-description
+                sequence  type zparams-sequence
                 overwrite   TYPE abap_boolean.
      class-METHODS hideparams.
     .
@@ -50,10 +51,11 @@ CLASS ZMN_GETSETPARAMS IMPLEMENTATION.
       params = VALUE #( username    = sy-uname
                         param       = parname
                         description = description
+                        sequence = sequence
                         value       = parvalue ).
       MODIFY zparams FROM @params.
     ENDIF.
-    update zparams set visible = 'X' where username = @sy-uname and param = @u_parname.
+    update zparams set visible = 'X', sequence = @sequence where username = @sy-uname and param = @u_parname.
   ENDMETHOD.
   METHOD HIDEPARAMS.
     update zparams set visible = ''.

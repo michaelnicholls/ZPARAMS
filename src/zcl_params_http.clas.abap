@@ -23,7 +23,7 @@ CLASS ZCL_PARAMS_HTTP IMPLEMENTATION.
         |<form  method="POST">| &&
         |<table border="1"><tr><th>Parameter</th><th>Description</th><th>Value</th></tr>|.
         SELECT * FROM zparams WHERE username = @sy-uname and visible is not INITIAL
-        order by param
+        order by sequence
         INTO TABLE @DATA(t_params) .
         LOOP AT t_params INTO DATA(params).
           html = | { html }<tr><td>{ params-param }</td><td>{ params-description }</td>| &&
