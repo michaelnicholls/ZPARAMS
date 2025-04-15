@@ -5,7 +5,7 @@
    <VSEOCLASS>
     <CLSNAME>ZMN_GETSETPARAMS</CLSNAME>
     <LANGU>E</LANGU>
-    <DESCRIPT>get parameters</DESCRIPT>
+    <DESCRIPT>get/set parameters</DESCRIPT>
     <STATE>1</STATE>
     <CLSCCINCL>X</CLSCCINCL>
     <FIXPT>X</FIXPT>

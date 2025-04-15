@@ -20,25 +20,27 @@ CLASS ZCL_MN_DEMO IMPLEMENTATION.
 
   " getparam will make it visible in the HTML page
 
-    zmn_getsetparams=>setparam( description = 'extra parameter x' parname = 'ABC' parvalue = '999' overwrite = abap_true ).
-    DATA(int1) = CONV i(  zmn_getsetparams=>getparam( 'INT1' ) ).
-    DATA(int2) = CONV i(  zmn_getsetparams=>getparam( 'INT2' ) ).
+    zmn_getsetparams=>setparam( description = 'integer1' parname = 'INT1' parvalue = '55' sequence = '01' overwrite = abap_false ).
+    zmn_getsetparams=>setparam( description = 'integer2' parname = 'INT2' parvalue = '19' sequence = '03' overwrite = abap_false ).
+    zmn_getsetparams=>setparam( description = 'Operator' parname = 'OPERATOR' parvalue = '+' sequence = '02' overwrite = abap_false ).
+    DATA(pa_int1) = CONV i(  zmn_getsetparams=>getparam( 'INT1' ) ).
+    DATA(pa_int2) = CONV i(  zmn_getsetparams=>getparam( 'INT2' ) ).
 
     DATA result TYPE string.
 
     CASE zmn_getsetparams=>getparam( 'OPERATOR' ).
 
       WHEN '+'.
-        result = |{  int1 }+{ int2 } = { int1 + int2 }|.
+        result = |{  pa_int1 }+{ pa_int2 } = { pa_int1 + pa_int2 }|.
       WHEN '-'.
-        result = |{  int1 }-{ int2 } = { int1 - int2 }|.
+        result = |{  pa_int1 }-{ pa_int2 } = { pa_int1 - pa_int2 }|.
       WHEN '*'.
-        result = |{  int1 }*{ int2 } = { int1 * int2 }|.
+        result = |{  pa_int1 }*{ pa_int2 } = { pa_int1 * pa_int2 }|.
       WHEN '/'.
-        IF int2 IS INITIAL.
+        IF pa_int2 IS INITIAL.
           result = 'No division by zero allowed'.
         ELSE.
-          result = |{  int1 }/{ int2 } = { conv f( int1 / int2 ) DECIMALS  = 2 }|.
+          result = |{  pa_int1 }/{ pa_int2 } = { conv f( pa_int1 / pa_int2 ) DECIMALS  = 2 }|.
         ENDIF.
       WHEN OTHERS.
         result = |Bad operator: {  zmn_getsetparams=>getparam( 'OPERATOR' ) }|.
