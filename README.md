@@ -14,3 +14,6 @@ and in POST mode updates the values.
 
 If you have problems after cloning the repo, try deleting the ZMN_HTTP service and its associated authorizations. Recreate the service, using the 
 ZCL_PARAMS_HTTP handler class, and publish it locally.
+
+With on premise ABAP, create an SICF node with handler ZCL_PARAMS_SICF. Activate and use TEst to start the page to change parameters.
+
