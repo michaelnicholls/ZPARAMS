@@ -1,9 +1,4 @@
 class ZCL_MN_HTTP definition
-"
-"   do not use
-"   ============
-"
-
   public
   create public .
 

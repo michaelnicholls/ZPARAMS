@@ -35,3 +35,5 @@ zmn_getsetparams=>hideparams(  ).
         result = |Bad operator: {  zmn_getsetparams=>getparam( 'OPERATOR' ) }|.
     ENDCASE.
 write: Result.
+zmn_getsetparams=>write( |============================| ).
+zmn_getsetparams=>write( result ).

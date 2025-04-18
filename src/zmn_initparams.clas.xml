@@ -5,7 +5,7 @@
    <VSEOCLASS>
     <CLSNAME>ZMN_INITPARAMS</CLSNAME>
     <LANGU>E</LANGU>
-    <DESCRIPT>load some parameters for all BTP users</DESCRIPT>
+    <DESCRIPT>load parameters</DESCRIPT>
     <STATE>1</STATE>
     <CLSCCINCL>X</CLSCCINCL>
     <FIXPT>X</FIXPT>

@@ -5,7 +5,7 @@
    <VSEOCLASS>
     <CLSNAME>ZCL_MN_HTTP</CLSNAME>
     <LANGU>E</LANGU>
-    <DESCRIPT>old version - do not use</DESCRIPT>
+    <DESCRIPT>Handlerclass for HTTP Service ZMN_HTTP</DESCRIPT>
     <STATE>1</STATE>
     <CLSCCINCL>X</CLSCCINCL>
     <FIXPT>X</FIXPT>

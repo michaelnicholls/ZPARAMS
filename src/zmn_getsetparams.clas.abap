@@ -13,7 +13,9 @@ CLASS zmn_getsetparams DEFINITION
                 sequence  type zparams-sequence
                 overwrite   TYPE abap_boolean.
      class-METHODS hideparams.
-    .
+     class-METHODS clearoutput.
+     class-methods write IMPORTING text type string.
+
   PROTECTED SECTION.
   PRIVATE SECTION.
 ENDCLASS.
@@ -58,7 +60,20 @@ CLASS ZMN_GETSETPARAMS IMPLEMENTATION.
     update zparams set visible = 'X', sequence = @sequence where username = @sy-uname and param = @u_parname.
   ENDMETHOD.
   METHOD HIDEPARAMS.
-    update zparams set visible = ''.
+    update zparams set visible = '' where username = @sy-uname.
   ENDMETHOD.
+
+  METHOD CLEAROUTPUT.
+    delete from zoutput where username = @sy-uname.
+  ENDMETHOD.
+
+  METHOD WRITE.
+    select max( sequence ) from zoutput into @data(max) where username = @sy-uname.
+    max = max + 1.
+    data output type zoutput.
+    output = value #(    username = sy-uname sequence = max text = text ).
+    insert zoutput from @output.
+  ENDMETHOD.
+
 
 ENDCLASS.
