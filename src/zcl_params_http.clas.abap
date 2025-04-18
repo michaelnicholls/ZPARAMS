@@ -19,10 +19,17 @@ CLASS zcl_params_http IMPLEMENTATION.
 
     CASE request->get_method(  ).
       WHEN CONV string( if_web_http_client=>get ).
-        html =  |<h2>Maintain your parameters</h2>| &&
+        zmn_getsetparams=>setparam( description = |Main class| overwrite = abap_false parname = |CLASS| parvalue = |ZCL_{ sy-uname }| sequence = || ).
+        zmn_getsetparams=>setparam( description = |Method| overwrite = abap_false parname = |METHOD| parvalue = || sequence = || ).
+        DATA(myclass) = zmn_getsetparams=>getparam( |CLASS| ).
+        DATA(mymethod) = zmn_getsetparams=>getparam( |METHOD| ).
+        html =  |<h2>Specify the global class, method, and parameters</h2>| &&
         |<form  method="POST">| &&
+         |Global class: <input  name="paramCLASS" value="{ myclass }"> | &&
+        |Method: <input  name="paramMETHOD" value="{ mymethod }"> | &&
+        | Note: There might be an INIT and MAIN method| &&
         |<table border="1"><tr><th>Parameter</th><th>Description</th><th>Value</th></tr>|.
-        SELECT * FROM zparams WHERE username = @sy-uname AND visible IS NOT INITIAL
+        SELECT * FROM zparams WHERE username = @sy-uname AND visible IS NOT INITIAL AND param NOT IN ( 'CLASS','METHOD' )
         ORDER BY sequence
         INTO TABLE @DATA(t_params) .
         LOOP AT t_params INTO DATA(params).
@@ -35,7 +42,7 @@ CLASS zcl_params_http IMPLEMENTATION.
         html = | { html }</table><input type="submit" value="Update"></form>|.
         SELECT * FROM zoutput WHERE username = @sy-uname ORDER BY sequence INTO TABLE  @DATA(outputs) .
         IF lines( outputs ) > 0.
-          html = |{ html }<br>Latest output:<br>================|.
+          html = |{ html }<br>Latest output:|.
           LOOP AT outputs INTO DATA(output).
             html = |{ html }<br>{ output-text }|.
           ENDLOOP.
@@ -48,8 +55,15 @@ CLASS zcl_params_http IMPLEMENTATION.
           DATA(uppername) = to_upper( field-name+5 ).
           UPDATE zparams SET value = @field-value WHERE username = @sy-uname AND param =  @uppername .
         ENDLOOP..
+        myclass = to_upper( zmn_getsetparams=>getparam( |CLASS| ) ).
+        mymethod = to_upper( zmn_getsetparams=>getparam( |METHOD| ) ).
+        TRY.
+            IF mymethod IS NOT INITIAL. CALL METHOD (myclass)=>(mymethod). ENDIF.
+          CATCH cx_root.
+            zmn_getsetparams=>write( |Error calling { myclass }=>{ mymethod }| ).
+        ENDTRY..
 
-        response->set_text(  |Parameter values updated. <button onClick="location.replace(location.href);">Refresh</button>| ).
+        response->set_text(  |<button onClick="location.replace(location.href);">Refresh</button>| ).
     ENDCASE..
   ENDMETHOD.
 ENDCLASS.

@@ -1,28 +1,35 @@
-class ZCL_PARAMS_SICF definition
-  public
-  final
-  create public .
+CLASS zcl_params_sicf DEFINITION
+  PUBLIC
+  FINAL
+  CREATE PUBLIC .
 
-public section.
+  PUBLIC SECTION.
 
-  interfaces IF_HTTP_EXTENSION .
-protected section.
-private section.
+    INTERFACES if_http_extension .
+  PROTECTED SECTION.
+  PRIVATE SECTION.
 ENDCLASS.
 
 
 
-CLASS ZCL_PARAMS_SICF IMPLEMENTATION.
-  METHOD IF_HTTP_EXTENSION~HANDLE_REQUEST.
-   DATA html TYPE string.
+CLASS zcl_params_sicf IMPLEMENTATION.
+  METHOD if_http_extension~handle_request.
+    DATA html TYPE string.
 
     CASE server->request->get_method(  ).
       WHEN CONV string( if_web_http_client=>get ).
-        html =  |<h2>Maintain your parameters</h2>| &&
+        zmn_getsetparams=>setparam( description = |Main class| overwrite = abap_false parname = |CLASS| parvalue = |ZCL_{ sy-uname }| sequence = || ).
+        zmn_getsetparams=>setparam( description = |Method| overwrite = abap_false parname = |METHOD| parvalue = || sequence = || ).
+        DATA(myclass) = zmn_getsetparams=>getparam( |CLASS| ).
+        DATA(mymethod) = zmn_getsetparams=>getparam( |METHOD| ).
+        html =  |<h2>Specify the global class, method, and parameters</h2>| &&
         |<form  method="POST">| &&
+         |Global class: <input  name="paramCLASS" value="{ myclass }"> | &&
+        |Method: <input  name="paramMETHOD" value="{ mymethod }"> | &&
+        | Note: There might be an INIT and MAIN method| &&
         |<table border="1"><tr><th>Parameter</th><th>Description</th><th>Value</th></tr>|.
-        SELECT * FROM zparams WHERE username = @sy-uname and visible is not INITIAL
-        order by sequence
+        SELECT * FROM zparams WHERE username = @sy-uname AND visible IS NOT INITIAL AND param NOT IN ( 'CLASS','METHOD' )
+        ORDER BY sequence
         INTO TABLE @DATA(t_params) .
         LOOP AT t_params INTO DATA(params).
           html = | { html }<tr><td>{ params-param }</td><td>{ params-description }</td>| &&
@@ -32,24 +39,31 @@ CLASS ZCL_PARAMS_SICF IMPLEMENTATION.
 
         ENDLOOP.
         html = | { html }</table><input type="submit" value="Update"></form>|.
-        select * from zoutput where username = @sy-uname order by sequence into table  @data(outputs) .
-        if lines( outputs ) > 0.
-            html = |{ html }<br>Latest output:<br>================|.
-            loop at outputs into data(output).
-               html = |{ html }<br>{ output-text }|.
-            endloop.
-        endif.
+        SELECT * FROM zoutput WHERE username = @sy-uname ORDER BY sequence INTO TABLE  @DATA(outputs) .
+        IF lines( outputs ) > 0.
+          html = |{ html }<br>Latest output:|.
+          LOOP AT outputs INTO DATA(output).
+            html = |{ html }<br>{ output-text }|.
+          ENDLOOP.
+        ENDIF.
         server->response->set_cdata( html ).
       WHEN CONV string( if_web_http_client=>post ).
-      data t_fields type tihttpnvp.
-         server->request->get_form_fields( CHANGING fields = t_fields ).
+        DATA t_fields TYPE tihttpnvp.
+        server->request->get_form_fields( CHANGING fields = t_fields ).
 
         LOOP AT t_fields INTO DATA(field).
-        data(uppername) = to_upper( field-name+5 ).
-      update zparams set value = @field-value where username = @sy-uname and param =  @uppername .
+          DATA(uppername) = to_upper( field-name+5 ).
+          UPDATE zparams SET value = @field-value WHERE username = @sy-uname AND param =  @uppername .
         ENDLOOP..
+        myclass = to_upper( zmn_getsetparams=>getparam( |CLASS| ) ).
+        mymethod = to_upper( zmn_getsetparams=>getparam( |METHOD| ) ).
+        TRY.
+            IF mymethod IS NOT INITIAL. CALL METHOD (myclass)=>(mymethod). ENDIF.
+          CATCH cx_root.
+            zmn_getsetparams=>write( |Error calling { myclass }=>{ mymethod }| ).
+        ENDTRY..
 
-        server->response->set_cdata(  |Parameter values updated. <button onClick="location.replace(location.href);">Restart</button>| ).
+        server->response->set_cdata(  |<button onClick="location.replace(location.href);">Refresh</button>| ).
     ENDCASE..
   ENDMETHOD.
 

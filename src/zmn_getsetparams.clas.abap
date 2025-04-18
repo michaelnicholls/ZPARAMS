@@ -60,7 +60,7 @@ CLASS ZMN_GETSETPARAMS IMPLEMENTATION.
     update zparams set visible = 'X', sequence = @sequence where username = @sy-uname and param = @u_parname.
   ENDMETHOD.
   METHOD HIDEPARAMS.
-    update zparams set visible = '' where username = @sy-uname.
+    update zparams set visible = '' where username = @sy-uname and param not in ( 'CLASS','METHOD' ).
   ENDMETHOD.
 
   METHOD CLEAROUTPUT.

@@ -5,6 +5,7 @@
    <PROGDIR>
     <NAME>Z_MN_DEMO</NAME>
     <DBAPL>S</DBAPL>
+    <DBNA>D$</DBNA>
     <SUBC>1</SUBC>
     <FIXPT>X</FIXPT>
     <LDBNAME>D$S</LDBNAME>
@@ -13,8 +14,8 @@
    <TPOOL>
     <item>
      <ID>R</ID>
-     <ENTRY>demo of params</ENTRY>
-     <LENGTH>14</LENGTH>
+     <ENTRY>report demo of params - on-premise</ENTRY>
+     <LENGTH>34</LENGTH>
     </item>
    </TPOOL>
   </asx:values>

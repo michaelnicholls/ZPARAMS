@@ -14,13 +14,13 @@ ENDCLASS.
 CLASS ZCL_MN_DEMO IMPLEMENTATION.
 
 
-  METHOD if_oo_adt_classrun~main.
 
+  METHOD if_oo_adt_classrun~main.
+" example of zparams using btp
   zmn_getsetparams=>hideparams(  ).
 
   " getparam will make it visible in the HTML page
 
-    zmn_getsetparams=>setparam( description = 'extra parameter x' parname = 'ABC' parvalue = '999' overwrite = abap_true ).
     DATA(int1) = CONV i(  zmn_getsetparams=>getparam( 'INT1' ) ).
     DATA(int2) = CONV i(  zmn_getsetparams=>getparam( 'INT2' ) ).
 
