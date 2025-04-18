@@ -68,7 +68,7 @@ CLASS ZMN_GETSETPARAMS IMPLEMENTATION.
   ENDMETHOD.
 
   METHOD WRITE.
-    select max( sequence ) from zoutput into @data(max) where username = @sy-uname.
+    select max( sequence ) from zoutput  where username = @sy-uname into @data(max).
     max = max + 1.
     data output type zoutput.
     output = value #(    username = sy-uname sequence = max text = text ).
