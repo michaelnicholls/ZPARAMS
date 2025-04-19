@@ -5,7 +5,7 @@
    <VSEOCLASS>
     <CLSNAME>ZCL_PARAMS_HTTP</CLSNAME>
     <LANGU>E</LANGU>
-    <DESCRIPT>Handlerclass for HTTP parameters service</DESCRIPT>
+    <DESCRIPT>BTP Handlerclass for HTTP parameters service</DESCRIPT>
     <STATE>1</STATE>
     <CLSCCINCL>X</CLSCCINCL>
     <FIXPT>X</FIXPT>

@@ -5,7 +5,7 @@
    <VSEOCLASS>
     <CLSNAME>ZCL_PARAMS_SICF</CLSNAME>
     <LANGU>E</LANGU>
-    <DESCRIPT>sicf node</DESCRIPT>
+    <DESCRIPT>sicf node handlerclass</DESCRIPT>
     <STATE>1</STATE>
     <CLSCCINCL>X</CLSCCINCL>
     <FIXPT>X</FIXPT>

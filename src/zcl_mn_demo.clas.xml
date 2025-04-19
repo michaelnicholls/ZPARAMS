@@ -5,7 +5,7 @@
    <VSEOCLASS>
     <CLSNAME>ZCL_MN_DEMO</CLSNAME>
     <LANGU>E</LANGU>
-    <DESCRIPT>demo using console</DESCRIPT>
+    <DESCRIPT>demo using init and main methods - btp and on-premise</DESCRIPT>
     <STATE>1</STATE>
     <CLSCCINCL>X</CLSCCINCL>
     <FIXPT>X</FIXPT>
