@@ -4,9 +4,9 @@ CLASS zcl_mn_demo DEFINITION
   CREATE PUBLIC .
 
   PUBLIC SECTION.
-  class-METHODS init.
-  class-methods main.
-  class-METHODS hello.
+    CLASS-METHODS init.
+    CLASS-METHODS main.
+    CLASS-METHODS hello.
   PROTECTED SECTION.
   PRIVATE SECTION.
 ENDCLASS.
@@ -15,18 +15,21 @@ ENDCLASS.
 
 CLASS zcl_mn_demo IMPLEMENTATION.
   METHOD init.
-zmn_getsetparams=>hideparams(  ).
+    zmn_getsetparams=>hideparams(  ).
 
-  zmn_getsetparams=>setparam( description = 'Integer1' parname = 'INT1' parvalue = '66' sequence = '01' overwrite = abap_false ).
-  zmn_getsetparams=>setparam( description = 'Integer2' parname = 'INT2' parvalue = '33' sequence = '03' overwrite = abap_false ).
-  zmn_getsetparams=>setparam( description = 'Math operator' parname = 'OPERATOR' parvalue = '+' sequence = '02' overwrite = abap_false ).
-  zmn_getsetparams=>clearoutput(  ).
-  zmn_getsetparams=>write( |Initialized parameters| ).
+    zmn_getsetparams=>setparam( description = 'Integer1' parname = 'INT1' parvalue = '66' sequence = '01' overwrite = abap_false ).
+    zmn_getsetparams=>setparam( description = 'Integer2' parname = 'INT2' parvalue = '33' sequence = '03' overwrite = abap_false ).
+    zmn_getsetparams=>setparam( description = 'Math operator' parname = 'OPERATOR' parvalue = '+' sequence = '02' overwrite = abap_false ).
+    zmn_getsetparams=>clearoutput(  ).
+    zmn_getsetparams=>writecode( |Initialized parameters| ).
   ENDMETHOD.
 
   METHOD main.
-   DATA(pa_int1) = CONV i(  zmn_getsetparams=>getparam( 'INT1' ) ).
-    DATA(pa_int2) = CONV i(  zmn_getsetparams=>getparam( 'INT2' ) ).
+    try.
+    data(parvalue) =  zmn_getsetparams=>getparam( 'INT1' ).
+    DATA(pa_int1) = CONV i(  parvalue ).
+    parvalue =  zmn_getsetparams=>getparam( 'INT2' ).
+    DATA(pa_int2) = CONV i(  parvalue ).
 
     DATA result TYPE string.
 
@@ -42,18 +45,21 @@ zmn_getsetparams=>hideparams(  ).
         IF pa_int2 IS INITIAL.
           result = 'No division by zero allowed'.
         ELSE.
-          result = |{  pa_int1 }/{ pa_int2 } = { conv f( pa_int1 / pa_int2 ) DECIMALS  = 2 }|.
+          result = |{  pa_int1 }/{ pa_int2 } = { CONV f( pa_int1 / pa_int2 ) DECIMALS  = 2 }|.
         ENDIF.
       WHEN OTHERS.
         result = |Bad operator: {  zmn_getsetparams=>getparam( 'OPERATOR' ) }|.
     ENDCASE.
-zmn_getsetparams=>clearoutput(  ).
-zmn_getsetparams=>write( |=================Demo ===========| ).
-zmn_getsetparams=>write( result ).
+    catch cx_root into data(env).
+      result = |Error with one of the parameters: { env->get_text(  ) }|.
+    endtry.
+    zmn_getsetparams=>clearoutput(  ).
+    zmn_getsetparams=>writecode( |================= Demo ===========| ).
+    zmn_getsetparams=>writecode( result ).
   ENDMETHOD.
 
   METHOD hello.
-zmn_getsetparams=>write( |Hello world!| ).
+    zmn_getsetparams=>write( |Hello world!| ).
   ENDMETHOD.
 
 ENDCLASS.

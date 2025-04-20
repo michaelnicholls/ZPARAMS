@@ -29,32 +29,31 @@ CLASS zcl_params_http IMPLEMENTATION.
       DATA(mymethod) = to_upper( zmn_getsetparams=>getparam( |METHOD| ) ).
       TRY.
           IF mymethod IS NOT INITIAL. CALL METHOD (myclass)=>(mymethod). ENDIF.
-        CATCH cx_root INTO data(err).
+        CATCH cx_root INTO DATA(err).
           zmn_getsetparams=>write( |Error calling { myclass }=>{ mymethod } - { err->get_text(  ) }| ).
       ENDTRY..
     ENDIF.
-    zmn_getsetparams=>setparam( description = |Main class| overwrite = abap_false parname = |CLASS| parvalue = |ZCL_{ sy-uname }| sequence = || ).
-    zmn_getsetparams=>setparam( description = |Method| overwrite = abap_false parname = |METHOD| parvalue = || sequence = || ).
-    myclass = zmn_getsetparams=>getparam( |CLASS| ).
-    mymethod = zmn_getsetparams=>getparam( |METHOD| ).
-    html =  |<h2>Specify the global class, method, and parameters</h2>| &&
+    zmn_getsetparams=>setparam( description = |Global class| overwrite = abap_false parname = |CLASS| parvalue = |ZCL_{ sy-uname }| sequence = |98| ).
+    zmn_getsetparams=>setparam( description = |Method eg INIT,MAIN| overwrite = abap_false parname = |METHOD| parvalue = || sequence = |99| ).
+    "myclass = zmn_getsetparams=>getparam( |CLASS| ).
+    "mymethod = zmn_getsetparams=>getparam( |METHOD| ).
+    html =  |<h2>Specify the parameters, global class, and method</h2>| &&
     |<script>function launch(text) \{ document.getElementById("paramMETHOD").value=text; document.getElementById("myform").submit(); \};</script> | &&
     |<form id="myform" method="POST">| &&
-     |Global class: <input  name="paramCLASS" value="{ myclass }"> | &&
-    |Method: <input id="paramMETHOD"  name="paramMETHOD" value="{ mymethod }"> | &&
-    | Note: There might be an <button onclick="launch('INIT')">INIT</button> and <button onclick="launch('MAIN')">MAIN</button> method| &&
     |<table border="1"><tr><th>Parameter</th><th>Description</th><th>Value</th></tr>|.
-    SELECT * FROM zparams WHERE username = @sy-uname AND visible IS NOT INITIAL AND param NOT IN ( 'CLASS','METHOD' )
+    SELECT * FROM zparams WHERE username = @sy-uname AND visible IS NOT INITIAL "AND param NOT IN ( 'CLASS','METHOD' )
     ORDER BY sequence
     INTO TABLE @DATA(t_params) .
     LOOP AT t_params INTO DATA(params).
       html = | { html }<tr><td>{ params-param }</td><td>{ params-description }</td>| &&
 
 
-      |<td><input  name="param{ params-param }" value="{ params-value }">| .
+      |<td><input  id="param{ params-param }" name="param{ params-param }" value="{ params-value }">| .
 
     ENDLOOP.
-    html = | { html }</table><input type="submit" value="Submit"></form>|.
+    html = |{ html }</table><input type="submit" value="Execute"> <button onclick="launch('INIT')">INIT</button> <button onclick="launch('MAIN')">MAIN</button>| &&
+
+    |</form>|.
     SELECT * FROM zoutput WHERE username = @sy-uname ORDER BY sequence INTO TABLE  @DATA(outputs) .
     IF lines( outputs ) > 0.
       html = |{ html }<br>Latest output:|.

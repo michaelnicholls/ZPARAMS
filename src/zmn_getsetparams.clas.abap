@@ -15,6 +15,7 @@ CLASS zmn_getsetparams DEFINITION
      class-METHODS hideparams.
      class-METHODS clearoutput.
      class-methods write IMPORTING text type string.
+     class-methods writecode IMPORTING text type string.
 
   PROTECTED SECTION.
   PRIVATE SECTION.
@@ -57,7 +58,7 @@ CLASS ZMN_GETSETPARAMS IMPLEMENTATION.
                         value       = parvalue ).
       MODIFY zparams FROM @params.
     ENDIF.
-    update zparams set visible = 'X', sequence = @sequence where username = @sy-uname and param = @u_parname.
+    update zparams set visible = 'X', sequence = @sequence, description = @description where username = @sy-uname and param = @u_parname.
   ENDMETHOD.
   METHOD HIDEPARAMS.
     update zparams set visible = '' where username = @sy-uname and param not in ( 'CLASS','METHOD' ).
@@ -75,5 +76,9 @@ CLASS ZMN_GETSETPARAMS IMPLEMENTATION.
     insert zoutput from @output.
   ENDMETHOD.
 
+
+  METHOD WRITECODE.
+     write( |<code>{ text }</code>| ).
+  ENDMETHOD.
 
 ENDCLASS.
