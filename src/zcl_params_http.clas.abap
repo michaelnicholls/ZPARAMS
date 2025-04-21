@@ -19,8 +19,7 @@ CLASS zcl_params_http IMPLEMENTATION.
     DATA t_fields TYPE tihttpnvp.
 
     IF request->get_method(  )  = CONV string( if_web_http_client=>post ).
-
-      t_fields = request->get_form_fields(  ).
+     "================================================================
       LOOP AT t_fields INTO DATA(field).
         DATA(uppername) = to_upper( field-name+5 ).
         UPDATE zparams SET value = @field-value WHERE username = @sy-uname AND param =  @uppername .
@@ -37,8 +36,9 @@ CLASS zcl_params_http IMPLEMENTATION.
     zmn_getsetparams=>setparam( description = |Method eg INIT,MAIN| overwrite = abap_false parname = |METHOD| parvalue = || sequence = |99| ).
     "myclass = zmn_getsetparams=>getparam( |CLASS| ).
     "mymethod = zmn_getsetparams=>getparam( |METHOD| ).
-    html =  |<h2>Specify the parameters, global class, and method</h2>| &&
-    |<script>function launch(text) \{ document.getElementById("paramMETHOD").value=text; document.getElementById("myform").submit(); \};</script> | &&
+    html =  |<h2>Specify the parameters, global class, and method</h2><script>| &&
+    |const urlParams = new URLSearchParams(window.location.search);const pClass = urlParams.get('class'); const pMethod=urlParams.get('method'); | &&
+    |function launch(text) \{ document.getElementById("paramMETHOD").value=text; document.getElementById("myform").submit(); \};</script> | &&
     |<form id="myform" method="POST">| &&
     |<table border="1"><tr><th>Parameter</th><th>Description</th><th>Value</th></tr>|.
     SELECT * FROM zparams WHERE username = @sy-uname AND visible IS NOT INITIAL "AND param NOT IN ( 'CLASS','METHOD' )
@@ -52,15 +52,18 @@ CLASS zcl_params_http IMPLEMENTATION.
 
     ENDLOOP.
     html = |{ html }</table><input type="submit" value="Execute"> <button onclick="launch('INIT')">INIT</button> <button onclick="launch('MAIN')">MAIN</button>| &&
+    |<script>if (pClass !== null) \{document.getElementById("paramCLASS").value=pClass;\};| &&
+    |if (pMethod !== null) \{document.getElementById("paramMETHOD").value=pMethod;\};</script>| &&
 
     |</form>|.
     SELECT * FROM zoutput WHERE username = @sy-uname ORDER BY sequence INTO TABLE  @DATA(outputs) .
     IF lines( outputs ) > 0.
-      html = |{ html }<br>Latest output:|.
+      html = |{ html }<h3>Latest output</h3>|.
       LOOP AT outputs INTO DATA(output).
-        html = |{ html }<br>{ output-text }|.
+        html = |{ html }{ output-text }<br>|.
       ENDLOOP.
     ENDIF.
+    "=================================================================
     response->set_text( html ).
   ENDMETHOD.
 ENDCLASS.
