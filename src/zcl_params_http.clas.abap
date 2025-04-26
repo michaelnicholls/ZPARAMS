@@ -50,7 +50,7 @@ CLASS zcl_params_http IMPLEMENTATION.
     zmn_getsetparams=>setparam( description = |Method eg INIT,MAIN|
                                 overwrite   = abap_false
                                 parname     = |METHOD|
-                                parvalue    = ||
+                                parvalue    = |MAIN|
                                 sequence    = |99| ).
     " myclass = zmn_getsetparams=>getparam( |CLASS| ).
     " mymethod = zmn_getsetparams=>getparam( |METHOD| ).

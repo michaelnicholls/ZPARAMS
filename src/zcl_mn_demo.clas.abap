@@ -21,7 +21,7 @@ CLASS zcl_mn_demo IMPLEMENTATION.
     zmn_getsetparams=>setparam( description = 'Integer2' parname = 'INT2' parvalue = '33' sequence = '03' overwrite = abap_false ).
     zmn_getsetparams=>setparam( description = 'Math operator' parname = 'OPERATOR' parvalue = '+' sequence = '02' overwrite = abap_false ).
     zmn_getsetparams=>clearoutput(  ).
-    zmn_getsetparams=>writecode( |Initialized parameters| ).
+    zmn_getsetparams=>writeabap( |Initialized parameters| ).
   ENDMETHOD.
 
   METHOD main.
@@ -54,8 +54,8 @@ CLASS zcl_mn_demo IMPLEMENTATION.
       result = |Error with one of the parameters: { env->get_text(  ) }|.
     endtry.
     zmn_getsetparams=>clearoutput(  ).
-    zmn_getsetparams=>writecode( |================= Demo ===========| ).
-    zmn_getsetparams=>writecode( result ).
+    zmn_getsetparams=>writeabap( |================= Demo ===========| ).
+    zmn_getsetparams=>writeabap( result ).
   ENDMETHOD.
 
   METHOD hello.

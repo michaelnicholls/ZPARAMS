@@ -59,6 +59,6 @@ CLASS zmn_initparams IMPLEMENTATION.
 
     MODIFY zparams FROM TABLE @t_params.
 
-    zmn_getsetparams=>writecode( |Demo parameters created| ).
+    zmn_getsetparams=>writeabap( |Demo parameters created| ).
   ENDMETHOD.
 ENDCLASS.

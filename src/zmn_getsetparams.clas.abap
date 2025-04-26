@@ -15,7 +15,7 @@ CLASS zmn_getsetparams DEFINITION
      class-METHODS hideparams.
      class-METHODS clearoutput.
      class-methods write IMPORTING text type string.
-     class-methods writecode IMPORTING text type string.
+     class-methods writeabap IMPORTING text type string.
 
   PROTECTED SECTION.
   PRIVATE SECTION.
@@ -77,8 +77,8 @@ CLASS ZMN_GETSETPARAMS IMPLEMENTATION.
   ENDMETHOD.
 
 
-  METHOD WRITECODE.
-     write( |<code>{ text }</code>| ).
+  METHOD WRITEabap.
+     write( |<pre>{ text }</pre>| ).
   ENDMETHOD.
 
 ENDCLASS.
