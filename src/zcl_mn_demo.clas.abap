@@ -7,6 +7,7 @@ CLASS zcl_mn_demo DEFINITION
     CLASS-METHODS init.
     CLASS-METHODS main.
     CLASS-METHODS hello.
+    class-METHODS hello_person.
   PROTECTED SECTION.
   PRIVATE SECTION.
 ENDCLASS.
@@ -60,6 +61,10 @@ CLASS zcl_mn_demo IMPLEMENTATION.
 
   METHOD hello.
     zmn_getsetparams=>write( |Hello world!| ).
+  ENDMETHOD.
+
+  METHOD hello_person.
+    zmn_getsetparams=>writeabap( |Hello, { zmn_getsetparams=>getparam( 'F_NAME' ) }| ).
   ENDMETHOD.
 
 ENDCLASS.

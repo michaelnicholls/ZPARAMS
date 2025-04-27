@@ -28,11 +28,12 @@ CLASS ZMN_GETSETPARAMS IMPLEMENTATION.
 
   METHOD getparam.
     data(u_parname) = to_upper(  parname  ).
-    CLEAR parvalue.
+
     SELECT SINGLE value FROM zparams
       WHERE username = @sy-uname
         AND param    = @u_parname
       INTO @parvalue.
+      if sy-subrc <> 0. parvalue = 'null'. endif.
     update zparams set visible = 'X' where
     username = @sy-uname
         AND param    = @u_parname.
