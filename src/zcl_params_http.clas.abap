@@ -17,6 +17,7 @@ CLASS zcl_params_http IMPLEMENTATION.
     DATA t_fields TYPE tihttpnvp.
 
     IF request->get_method( ) = CONV string( if_web_http_client=>post ).
+       t_fields = request->get_form_fields(  ).
     "============================ common code ====================================
       " -----------------------------  PAI ----------------------------
 
