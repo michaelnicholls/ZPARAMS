@@ -19,7 +19,9 @@ CLASS zcl_params_sicf IMPLEMENTATION.
 
     IF server->request->get_method( ) = CONV string( if_web_http_client=>post ).
       server->request->get_form_fields( CHANGING fields = t_fields ).
-      "================================================================
+      "============================ common code ====================================
+      " -----------------------------  PAI ----------------------------
+
       LOOP AT t_fields INTO DATA(field).
         DATA(uppername) = to_upper( field-name+5 ).
         UPDATE zparams SET value = @field-value WHERE username = @sy-uname AND param = @uppername.
@@ -44,6 +46,8 @@ CLASS zcl_params_sicf IMPLEMENTATION.
 
       ENDIF.
     ENDIF.
+  " -----------------------------  PBO ----------------------------
+
     zmn_getsetparams=>setparam( description = |Global class|
                                 overwrite   = abap_false
                                 parname     = |CLASS|
@@ -60,13 +64,13 @@ CLASS zcl_params_sicf IMPLEMENTATION.
     |const urlParams = new URLSearchParams(window.location.search);const pClass = urlParams.get('class'); const pMethod=urlParams.get('method'); | &&
     |function launch(text) \{ document.getElementById("paramMETHOD").value=text; document.getElementById("myform").submit(); \};</script> | &&
     |<form id="myform" method="POST">| &&
-    |<table border="1"><tr><th>Parameter</th><th>Description</th><th>Value</th></tr>|.
+    |<table border="1"><tr><th>Parameter</th><th>Value</th></tr>|.
     SELECT * FROM zparams
       WHERE username = @sy-uname AND visible IS NOT INITIAL " AND param NOT IN ( 'CLASS','METHOD' )
       ORDER BY sequence
       INTO TABLE @DATA(t_params).
     LOOP AT t_params INTO DATA(params).
-      html = | { html }<tr><td>{ params-param }</td><td>{ params-description }</td>| &&
+      html = | { html }<tr><td><span title="{ params-param }">{ params-description } </span></td>| &&
 
       |<td><input  id="param{ params-param }" name="param{ params-param }" value="{ params-value }">|.
 
