@@ -29,13 +29,13 @@ CLASS zcl_params_http IMPLEMENTATION.
       DATA r_classdescr TYPE REF TO cl_abap_classdescr.
       IF myclass IS NOT INITIAL.
         TRY.
-            IF cl_esh_ca_check=>is_active_class( |{ myclass }| ) = abap_true.
-              r_classdescr ?= cl_abap_typedescr=>describe_by_name( myclass ).
-              IF NOT line_exists( r_classdescr->methods[ name = 'INIT' ] ). zmn_getsetparams=>hideparams( ). ENDIF.
+  "          IF cl_esh_ca_check=>is_active_class( |{ myclass }| ) = abap_true.
+  "            r_classdescr ?= cl_abap_typedescr=>describe_by_name( myclass ).
+  "           IF NOT line_exists( r_classdescr->methods[ name = 'INIT' ] ). zmn_getsetparams=>hideparams( ). ENDIF.
               IF mymethod IS NOT INITIAL. CALL METHOD (myclass)=>(mymethod). ENDIF.
-            else.
-            zmn_getsetparams=>write( |Class { myclass } does not exist.| ).
-            ENDIF.
+  "        else.
+  "        zmn_getsetparams=>write( |Class { myclass } does not exist.| ).
+  "       ENDIF.
           CATCH cx_root INTO DATA(err).
 
             zmn_getsetparams=>write( |Error calling { myclass }=>{ mymethod } - { err->get_text( ) }| ).
